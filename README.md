@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="img/utilities.png" alt="Utilități Moldova Logo" width="128" height="128">
+</p>
+
 # Utilități Moldova - Home Assistant Custom Integration
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/default)
