@@ -1,0 +1,62 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configurare Utilități Moldova",
+        "description": "Selectați furnizorul de utilități și introduceți detaliile contractului.",
+        "data": {
+          "provider": "Furnizor de servicii",
+          "contract_number": "Număr contract / Cont personal",
+          "place_of_consumption": "Loc de consum (NCL)",
+          "username": "Nume utilizator / Email (Opțional)",
+          "password": "Parolă (Opțional)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Conectare eșuată la portalul furnizorului. Verificați conexiunea la internet.",
+      "invalid_auth": "Date de autentificare sau număr de contract incorect.",
+      "unknown": "A apărut o eroare neașteptată."
+    },
+    "abort": {
+      "already_configured": "Acest cont de utilități este deja configurat în Home Assistant."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opțiuni Utilități Moldova",
+        "description": "Configurați frecvența de actualizare a datelor.",
+        "data": {
+          "scan_interval": "Interval actualizare date (Ore)"
+        }
+      }
+    }
+  },
+  "services": {
+    "submit_meter_reading": {
+      "name": "Transmitere index contor",
+      "description": "Transmite un index nou al contorului direct către furnizorul de utilități.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Cont utilități",
+          "description": "Contul de utilități vizat."
+        },
+        "reading_value": {
+          "name": "Valoare index",
+          "description": "Valoarea curentă a indexului contorului pentru transmitere."
+        }
+      }
+    },
+    "refresh_data": {
+      "name": "Actualizare date utilități",
+      "description": "Forțează actualizarea imediată a datelor pentru contul de utilități specificat.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Cont utilități",
+          "description": "Contul de utilități vizat."
+        }
+      }
+    }
+  }
+}

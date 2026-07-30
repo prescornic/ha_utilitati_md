@@ -1,0 +1,12 @@
+{
+  "domain": "utilitati_md",
+  "name": "Utilități Moldova",
+  "codeowners": [
+    "@andrei-prescornic"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/andrei-prescornic/ha_utilitati_md",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/andrei-prescornic/ha_utilitati_md/issues",
+  "version": "0.1.0"
+}

@@ -1,0 +1,32 @@
+submit_meter_reading:
+  name: Submit Meter Reading
+  description: Submits a new meter index reading directly to the specified utility provider.
+  fields:
+    config_entry_id:
+      name: Utility Account / Integration Entry ID
+      description: Target utility contract account entry ID in Home Assistant.
+      required: true
+      selector:
+        config_entry:
+          integration: utilitati_md
+    reading_value:
+      name: Reading Value
+      description: The current meter index reading value to submit.
+      required: true
+      selector:
+        number:
+          min: 0
+          max: 999999
+          step: 0.01
+
+refresh_data:
+  name: Refresh Utility Data
+  description: Forces an immediate data refresh for the specified utility provider contract account.
+  fields:
+    config_entry_id:
+      name: Utility Account / Integration Entry ID
+      description: Target utility contract account entry ID.
+      required: true
+      selector:
+        config_entry:
+          integration: utilitati_md

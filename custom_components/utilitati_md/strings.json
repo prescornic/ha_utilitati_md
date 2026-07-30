@@ -1,0 +1,62 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Moldova Utilities Setup",
+        "description": "Select your Moldova utility provider and enter your contract details.",
+        "data": {
+          "provider": "Utility Provider",
+          "contract_number": "Contract Number / Account ID",
+          "place_of_consumption": "Place of Consumption (NCL / NLC)",
+          "username": "Username / Email (Optional)",
+          "password": "Password (Optional)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to provider portal. Please verify connection.",
+      "invalid_auth": "Invalid credentials or contract number provided.",
+      "unknown": "An unexpected error occurred."
+    },
+    "abort": {
+      "already_configured": "This utility account is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Moldova Utilities Options",
+        "description": "Configure update frequency and options.",
+        "data": {
+          "scan_interval": "Data Refresh Interval (Hours)"
+        }
+      }
+    }
+  },
+  "services": {
+    "submit_meter_reading": {
+      "name": "Submit Meter Reading",
+      "description": "Submits a new meter index reading directly to the specified utility provider.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Utility Account",
+          "description": "Target utility contract account integration entry."
+        },
+        "reading_value": {
+          "name": "Reading Value",
+          "description": "The current meter index reading value to submit."
+        }
+      }
+    },
+    "refresh_data": {
+      "name": "Refresh Utility Data",
+      "description": "Forces an immediate data refresh for the specified utility provider contract account.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Utility Account",
+          "description": "Target utility contract account entry."
+        }
+      }
+    }
+  }
+}
