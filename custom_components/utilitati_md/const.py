@@ -30,10 +30,10 @@ DEFAULT_SCAN_INTERVAL_HOURS: Final = 24
 
 # Provider identifiers
 PROVIDER_PREMIER_ENERGY: Final = "premier_energy"
-PROVIDER_CHISINAU_GAZ: Final = "chisinau_gaz"
 PROVIDER_INFOSARP: Final = "infosarp"
 PROVIDER_ENERGOCOM: Final = "energocom"
 PROVIDER_STARNET: Final = "starnet"
+PROVIDER_APA_CANAL_CHISINAU: Final = "apa_canal_chisinau"
 PROVIDER_AUTO_SALUBRITATE: Final = "auto_salubritate"
 
 PROVIDERS: Final = {
@@ -61,10 +61,10 @@ PROVIDERS: Final = {
         "icon": "mdi:lightning-bolt-outline",
         "supports_meter_submission": True,
     },
-    PROVIDER_CHISINAU_GAZ: {
-        "name": "Chișinău-Gaz (Gaz Naturale)",
+    PROVIDER_APA_CANAL_CHISINAU: {
+        "name": "Apă-Canal Chișinău (Apă / Canalizare)",
         "unit_of_measurement": "m³",
-        "icon": "mdi:fire",
+        "icon": "mdi:water",
         "supports_meter_submission": True,
     },
     PROVIDER_AUTO_SALUBRITATE: {
