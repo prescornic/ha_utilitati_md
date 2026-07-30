@@ -19,8 +19,8 @@ A unified Home Assistant integration for managing Moldova utility services. Cent
 |---|---|---|---|
 | 🚰 **InfoSarp** | Water & Communal / Servicii Comunale | 🟢 **Supported** | Invoice tracking, Balance, Line-item breakdown |
 | 🔥 **Energocom** | Natural Gas / Gaz | 🟢 **Supported** | Invoice tracking, Balance |
+| 🗑️ **Regia AutoSalubritate** | Waste Management / Salubrizare | 🟡 **In Progress** | Invoice tracking, Balance (Pending live invoice) |
 | 💡 **Premier Energy** | Electricity / Energie Electrică | ⚪ **Planned** | Invoice tracking, Balance, Index submission |
-| 🗑️ **Regia AutoSalubritate** | Waste Management / Salubrizare | ⚪ **Planned** | Invoice tracking, Due dates, Balance |
 | 🔥 **Chișinău-Gaz** | Natural Gas / Gaze Naturale | ⚪ **Planned** | Invoice tracking, Balance, Index submission |
 
 ---
@@ -49,7 +49,7 @@ A unified Home Assistant integration for managing Moldova utility services. Cent
 
 1. Go to **Settings** -> **Devices & Services** -> **Add Integration**.
 2. Search for **Utilități Moldova**.
-3. Select your Utility Provider (e.g., **InfoSarp**, **Energocom**).
+3. Select your Utility Provider (e.g., **InfoSarp**, **Energocom**, **AutoSalubritate**).
 4. Enter Account Alias (optional) and Contract Number / Cont Personal (e.g., `123/1234567890`).
 5. Click **Submit**.
 

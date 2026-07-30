@@ -1,16 +1,28 @@
-"""AutoSalubritate provider implementation engine."""
+"""Regia AutoSalubritate provider implementation engine via oplata.md."""
+
+from __future__ import annotations
 
 from datetime import date, datetime
 import logging
 
 from ..models import AccountData, Invoice
 from .base import BaseUtilityProvider
+from .oplata_md import OplataMDClient
 
 _LOGGER = logging.getLogger(__name__)
 
+AUTOSALUBRITATE_SERVICE_ID = 606
+AUTOSALUBRITATE_ACCOUNT_KEY = "account"
+AUTOSALUBRITATE_ACCOUNT_NAME = "Numărul contului"
+
 
 class AutoSalubritateProvider(BaseUtilityProvider):
-    """Regia Autosalubritate (Waste Management) provider connector."""
+    """Regia AutoSalubritate (Waste Management) provider connector via oplata.md."""
+
+    def __init__(self, *args, **kwargs) -> None:
+        """Initialize AutoSalubritate provider."""
+        super().__init__(*args, **kwargs)
+        self.client = OplataMDClient(session=self.session)
 
     @property
     def provider_id(self) -> str:
@@ -20,15 +32,25 @@ class AutoSalubritateProvider(BaseUtilityProvider):
     @property
     def provider_name(self) -> str:
         """Return human-readable provider name."""
-        return "Regia Autosalubritate"
+        return "Regia AutoSalubritate"
 
     async def async_authenticate(self) -> bool:
-        """Authenticate with Autosalubritate system."""
-        _LOGGER.info(
-            "AutoSalubritateProvider authenticate called for contract %s",
-            self.contract_number,
-        )
-        return True
+        """Validate AutoSalubritate account number against oplata.md backend."""
+        try:
+            res = await self.client.async_fetch_check(
+                contract_number=self.contract_number,
+                service_id=AUTOSALUBRITATE_SERVICE_ID,
+                account_key=AUTOSALUBRITATE_ACCOUNT_KEY,
+                account_name=AUTOSALUBRITATE_ACCOUNT_NAME,
+            )
+            return res.total_amount_mdl is not None
+        except Exception as err:
+            _LOGGER.warning(
+                "AutoSalubritate authentication attempt for contract %s: %s",
+                self.contract_number,
+                err,
+            )
+            return False
 
     async def async_fetch_data(self) -> AccountData:
         """Fetch balance and invoice data for AutoSalubritate."""
@@ -36,19 +58,28 @@ class AutoSalubritateProvider(BaseUtilityProvider):
             "Fetching AutoSalubritate data for contract %s", self.contract_number
         )
 
+        res = await self.client.async_fetch_check(
+            contract_number=self.contract_number,
+            service_id=AUTOSALUBRITATE_SERVICE_ID,
+            account_key=AUTOSALUBRITATE_ACCOUNT_KEY,
+            account_name=AUTOSALUBRITATE_ACCOUNT_NAME,
+        )
+
+        breakdown = {item.name: item.amount_mdl for item in res.items}
+
         last_invoice = Invoice(
-            invoice_number=f"AS-{self.contract_number}-01",
-            amount_mdl=35.00,
+            invoice_number=f"AS-{self.contract_number}",
+            amount_mdl=res.total_amount_mdl,
             issue_date=date.today(),
-            due_date=date.today(),
-            is_paid=False,
+            is_paid=(res.total_amount_mdl <= 0),
+            extra_details=breakdown,
         )
 
         return AccountData(
             contract_number=self.contract_number,
             provider_id=self.provider_id,
             provider_name=self.provider_name,
-            unpaid_balance_mdl=35.00,
+            unpaid_balance_mdl=res.total_amount_mdl,
             last_invoice=last_invoice,
             latest_reading=None,
             monthly_consumption=None,
