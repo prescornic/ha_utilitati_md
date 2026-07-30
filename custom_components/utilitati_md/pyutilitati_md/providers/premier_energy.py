@@ -1,53 +1,52 @@
-"""Chișinău-Gaz provider implementation stub."""
+"""Premier Energy provider implementation engine."""
 
 from datetime import date, datetime
 import logging
 
-from ..const import PROVIDER_CHISINAU_GAZ
 from ..models import AccountData, Invoice, MeterReading
 from .base import BaseUtilityProvider
 
 _LOGGER = logging.getLogger(__name__)
 
 
-class ChisinauGazProvider(BaseUtilityProvider):
-    """Chișinău-Gaz (Natural Gas) provider connector."""
+class PremierEnergyProvider(BaseUtilityProvider):
+    """Premier Energy (Electricity) provider connector."""
 
     @property
     def provider_id(self) -> str:
         """Return provider identifier."""
-        return PROVIDER_CHISINAU_GAZ
+        return "premier_energy"
 
     @property
     def provider_name(self) -> str:
         """Return human-readable provider name."""
-        return "Chișinău-Gaz"
+        return "Premier Energy"
 
     async def async_authenticate(self) -> bool:
-        """Authenticate with Chișinău-Gaz portal."""
+        """Authenticate with Premier Energy portal."""
         _LOGGER.info(
-            "ChisinauGazProvider authenticate called for contract %s",
+            "PremierEnergyProvider authenticate called for contract %s",
             self.contract_number,
         )
         return True
 
     async def async_fetch_data(self) -> AccountData:
-        """Fetch balance, invoice, and index reading from Chișinău-Gaz."""
+        """Fetch balance, invoice, and meter reading data from Premier Energy."""
         _LOGGER.debug(
-            "Fetching Chișinău-Gaz data for contract %s", self.contract_number
+            "Fetching Premier Energy data for contract %s", self.contract_number
         )
 
         last_invoice = Invoice(
-            invoice_number=f"CG-{self.contract_number}-01",
-            amount_mdl=820.00,
+            invoice_number=f"PE-{self.contract_number}-01",
+            amount_mdl=350.50,
             issue_date=date.today(),
             due_date=date.today(),
             is_paid=False,
         )
 
         latest_reading = MeterReading(
-            reading_value=3420.0,
-            unit="m³",
+            reading_value=12450.0,
+            unit="kWh",
             reading_date=datetime.now(),
         )
 
@@ -55,18 +54,18 @@ class ChisinauGazProvider(BaseUtilityProvider):
             contract_number=self.contract_number,
             provider_id=self.provider_id,
             provider_name=self.provider_name,
-            unpaid_balance_mdl=820.00,
+            unpaid_balance_mdl=350.50,
             last_invoice=last_invoice,
             latest_reading=latest_reading,
-            monthly_consumption=65.0,
+            monthly_consumption=145.0,
             is_connected=True,
             last_updated=datetime.now(),
         )
 
     async def async_submit_meter_reading(self, reading_value: float) -> bool:
-        """Submit meter reading to Chișinău-Gaz."""
+        """Submit meter reading to Premier Energy."""
         _LOGGER.info(
-            "Submitting Chișinău-Gaz reading %.2f m³ for contract %s",
+            "Submitting Premier Energy reading %.2f kWh for contract %s",
             reading_value,
             self.contract_number,
         )

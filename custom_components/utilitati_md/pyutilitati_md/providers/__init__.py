@@ -1,13 +1,11 @@
-"""Provider factory and registry for Utilități Moldova."""
+"""Provider factory registry for pyutilitati_md."""
+
+from __future__ import annotations
 
 from typing import Any
 
-from ..const import (
-    PROVIDER_AUTO_SALUBRITATE,
-    PROVIDER_CHISINAU_GAZ,
-    PROVIDER_INFO_SARP,
-    PROVIDER_PREMIER_ENERGY,
-)
+from aiohttp import ClientSession
+
 from .auto_salubritate import AutoSalubritateProvider
 from .base import BaseUtilityProvider
 from .chisinau_gaz import ChisinauGazProvider
@@ -15,10 +13,10 @@ from .info_sarp import InfoSarpProvider
 from .premier_energy import PremierEnergyProvider
 
 PROVIDER_CLASSES: dict[str, type[BaseUtilityProvider]] = {
-    PROVIDER_PREMIER_ENERGY: PremierEnergyProvider,
-    PROVIDER_CHISINAU_GAZ: ChisinauGazProvider,
-    PROVIDER_INFO_SARP: InfoSarpProvider,
-    PROVIDER_AUTO_SALUBRITATE: AutoSalubritateProvider,
+    "premier_energy": PremierEnergyProvider,
+    "chisinau_gaz": ChisinauGazProvider,
+    "info_sarp": InfoSarpProvider,
+    "auto_salubritate": AutoSalubritateProvider,
 }
 
 
@@ -28,12 +26,10 @@ def get_provider_instance(
     place_of_consumption: str | None = None,
     username: str | None = None,
     password: str | None = None,
+    session: ClientSession | None = None,
     extra_config: dict[str, Any] | None = None,
 ) -> BaseUtilityProvider:
-    """Instantiate and return the appropriate provider connector.
-
-    Raises ValueError if provider_id is unknown.
-    """
+    """Instantiate and return the appropriate provider connector."""
     provider_cls = PROVIDER_CLASSES.get(provider_id)
     if not provider_cls:
         raise ValueError(f"Unknown utility provider: {provider_id}")
@@ -43,5 +39,6 @@ def get_provider_instance(
         place_of_consumption=place_of_consumption,
         username=username,
         password=password,
+        session=session,
         extra_config=extra_config,
     )

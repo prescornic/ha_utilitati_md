@@ -3,8 +3,16 @@
 from datetime import timedelta
 import logging
 
+from pyutilitati_md import (
+    AccountData,
+    BaseUtilityProvider,
+    UtilitatiMDError,
+    get_provider_instance,
+)
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import (
@@ -17,9 +25,6 @@ from .const import (
     DEFAULT_SCAN_INTERVAL_HOURS,
     DOMAIN,
 )
-from .models import AccountData
-from .providers import get_provider_instance
-from .providers.base import BaseUtilityProvider
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -43,12 +48,15 @@ class UtilitatiMDDataUpdateCoordinator(DataUpdateCoordinator[AccountData]):
         )
         update_interval = timedelta(hours=scan_interval_hours)
 
+        session = async_get_clientsession(hass)
+
         self.provider: BaseUtilityProvider = get_provider_instance(
             provider_id=self.provider_id,
             contract_number=self.contract_number,
             place_of_consumption=self.place_of_consumption,
             username=self.username,
             password=self.password,
+            session=session,
         )
 
         super().__init__(
@@ -59,7 +67,7 @@ class UtilitatiMDDataUpdateCoordinator(DataUpdateCoordinator[AccountData]):
         )
 
     async def _async_update_data(self) -> AccountData:
-        """Fetch data from utility provider."""
+        """Fetch data from utility provider via pyutilitati_md."""
         try:
             _LOGGER.debug(
                 "Updating utility data for provider %s, contract %s",
@@ -68,11 +76,16 @@ class UtilitatiMDDataUpdateCoordinator(DataUpdateCoordinator[AccountData]):
             )
             data = await self.provider.async_fetch_data()
             return data
-        except Exception as err:
+        except UtilitatiMDError as err:
             _LOGGER.error(
-                "Error fetching data from provider %s: %s", self.provider_id, err
+                "Library error fetching data from provider %s: %s", self.provider_id, err
             )
             raise UpdateFailed(f"Error communicating with provider {self.provider_id}: {err}") from err
+        except Exception as err:
+            _LOGGER.error(
+                "Unexpected error fetching data from provider %s: %s", self.provider_id, err
+            )
+            raise UpdateFailed(f"Unexpected error: {err}") from err
 
     async def async_submit_meter_reading(self, reading_value: float) -> bool:
         """Submit a meter reading to the utility provider."""

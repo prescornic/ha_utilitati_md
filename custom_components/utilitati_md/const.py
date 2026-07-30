@@ -1,6 +1,17 @@
 """Constants for the Utilități Moldova integration."""
 
+from pathlib import Path
+import sys
 from typing import Final
+
+# Path resolver: Supports HACS custom repository distribution and local lib dev
+_INTEGRATION_DIR = Path(__file__).parent
+_LOCAL_LIB_PATH = _INTEGRATION_DIR.parent.parent / "lib" / "pyutilitati_md" / "src"
+
+if (_INTEGRATION_DIR / "pyutilitati_md").exists() and str(_INTEGRATION_DIR) not in sys.path:
+    sys.path.insert(0, str(_INTEGRATION_DIR))
+elif _LOCAL_LIB_PATH.exists() and str(_LOCAL_LIB_PATH) not in sys.path:
+    sys.path.insert(0, str(_LOCAL_LIB_PATH))
 
 DOMAIN: Final = "utilitati_md"
 MANUFACTURER: Final = "Utilități Moldova"

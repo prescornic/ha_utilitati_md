@@ -1,4 +1,6 @@
-"""Data models for Utilități Moldova integration."""
+"""Data models for pyutilitati_md library."""
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import date, datetime

@@ -5,11 +5,17 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from pyutilitati_md import (
+    UtilitatiMDAuthError,
+    UtilitatiMDConnectionError,
+    get_provider_instance,
+)
 import voluptuous as vol
 
 from homeassistant import config_entries
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
+from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
 from .const import (
     CONF_CONTRACT_NUMBER,
@@ -22,7 +28,6 @@ from .const import (
     DOMAIN,
     PROVIDERS,
 )
-from .providers import get_provider_instance
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -49,7 +54,8 @@ class UtilitatiMDConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             await self.async_set_unique_id(f"{provider_id}_{contract_number}")
             self._abort_if_unique_id_configured()
 
-            # Test authentication with provider connector
+            # Test authentication with pyutilitati_md provider client
+            session = async_create_clientsession(self.hass)
             try:
                 provider_inst = get_provider_instance(
                     provider_id=provider_id,
@@ -57,10 +63,15 @@ class UtilitatiMDConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     place_of_consumption=place_of_consumption,
                     username=username,
                     password=password,
+                    session=session,
                 )
                 auth_success = await provider_inst.async_authenticate()
                 if not auth_success:
                     errors["base"] = "invalid_auth"
+            except UtilitatiMDAuthError:
+                errors["base"] = "invalid_auth"
+            except UtilitatiMDConnectionError:
+                errors["base"] = "cannot_connect"
             except Exception as err:
                 _LOGGER.error("Failed to authenticate with provider %s: %s", provider_id, err)
                 errors["base"] = "cannot_connect"

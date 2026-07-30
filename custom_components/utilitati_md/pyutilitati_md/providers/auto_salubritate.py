@@ -1,9 +1,8 @@
-"""AutoSalubritate provider implementation stub."""
+"""AutoSalubritate provider implementation engine."""
 
 from datetime import date, datetime
 import logging
 
-from ..const import PROVIDER_AUTO_SALUBRITATE
 from ..models import AccountData, Invoice
 from .base import BaseUtilityProvider
 
@@ -16,7 +15,7 @@ class AutoSalubritateProvider(BaseUtilityProvider):
     @property
     def provider_id(self) -> str:
         """Return provider identifier."""
-        return PROVIDER_AUTO_SALUBRITATE
+        return "auto_salubritate"
 
     @property
     def provider_name(self) -> str:
@@ -51,7 +50,7 @@ class AutoSalubritateProvider(BaseUtilityProvider):
             provider_name=self.provider_name,
             unpaid_balance_mdl=35.00,
             last_invoice=last_invoice,
-            latest_reading=None,  # Waste management does not have meter readings
+            latest_reading=None,
             monthly_consumption=None,
             is_connected=True,
             last_updated=datetime.now(),

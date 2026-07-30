@@ -1,8 +1,12 @@
 """Abstract Base Class for Moldova Utility Providers."""
 
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 import logging
 from typing import Any
+
+from aiohttp import ClientSession
 
 from ..models import AccountData
 
@@ -18,6 +22,7 @@ class BaseUtilityProvider(ABC):
         place_of_consumption: str | None = None,
         username: str | None = None,
         password: str | None = None,
+        session: ClientSession | None = None,
         extra_config: dict[str, Any] | None = None,
     ) -> None:
         """Initialize provider connector."""
@@ -25,6 +30,7 @@ class BaseUtilityProvider(ABC):
         self.place_of_consumption = place_of_consumption
         self.username = username
         self.password = password
+        self.session = session
         self.extra_config = extra_config or {}
 
     @property
