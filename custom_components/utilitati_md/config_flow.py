@@ -5,11 +5,6 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from pyutilitati_md import (
-    UtilitatiMDAuthError,
-    UtilitatiMDConnectionError,
-    get_provider_instance,
-)
 import voluptuous as vol
 
 from homeassistant import config_entries
@@ -30,12 +25,19 @@ from .const import (
     PROVIDERS,
 )
 
+from pyutilitati_md import (
+    UtilitatiMDAuthError,
+    UtilitatiMDConnectionError,
+    get_provider_instance,
+)
+
 _LOGGER = logging.getLogger(__name__)
 
 
 class UtilitatiMDConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Utilități Moldova."""
 
+    domain = DOMAIN
     VERSION = 1
 
     async def async_step_user(

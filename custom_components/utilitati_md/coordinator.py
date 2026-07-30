@@ -3,13 +3,6 @@
 from datetime import timedelta
 import logging
 
-from pyutilitati_md import (
-    AccountData,
-    BaseUtilityProvider,
-    UtilitatiMDError,
-    get_provider_instance,
-)
-
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -24,6 +17,13 @@ from .const import (
     CONF_USERNAME,
     DEFAULT_SCAN_INTERVAL_HOURS,
     DOMAIN,
+)
+
+from pyutilitati_md import (
+    AccountData,
+    BaseUtilityProvider,
+    UtilitatiMDError,
+    get_provider_instance,
 )
 
 _LOGGER = logging.getLogger(__name__)
