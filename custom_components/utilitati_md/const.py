@@ -31,10 +31,23 @@ DEFAULT_SCAN_INTERVAL_HOURS: Final = 24
 # Provider identifiers
 PROVIDER_PREMIER_ENERGY: Final = "premier_energy"
 PROVIDER_CHISINAU_GAZ: Final = "chisinau_gaz"
-PROVIDER_INFO_SARP: Final = "info_sarp"
+PROVIDER_INFOSARP: Final = "infosarp"
+PROVIDER_ENERGOCOM: Final = "energocom"
 PROVIDER_AUTO_SALUBRITATE: Final = "auto_salubritate"
 
 PROVIDERS: Final = {
+    PROVIDER_INFOSARP: {
+        "name": "InfoSarp (Servicii Comunale / Apă)",
+        "unit_of_measurement": "m³",
+        "icon": "mdi:water-pump",
+        "supports_meter_submission": True,
+    },
+    PROVIDER_ENERGOCOM: {
+        "name": "Energocom (Gaz)",
+        "unit_of_measurement": "m³",
+        "icon": "mdi:fire",
+        "supports_meter_submission": False,
+    },
     PROVIDER_PREMIER_ENERGY: {
         "name": "Premier Energy (Energie Electrică)",
         "unit_of_measurement": "kWh",
@@ -45,12 +58,6 @@ PROVIDERS: Final = {
         "name": "Chișinău-Gaz (Gaz Naturale)",
         "unit_of_measurement": "m³",
         "icon": "mdi:fire",
-        "supports_meter_submission": True,
-    },
-    PROVIDER_INFO_SARP: {
-        "name": "InfoSarp (Servicii Comunale / Apă)",
-        "unit_of_measurement": "m³",
-        "icon": "mdi:water-pump",
         "supports_meter_submission": True,
     },
     PROVIDER_AUTO_SALUBRITATE: {

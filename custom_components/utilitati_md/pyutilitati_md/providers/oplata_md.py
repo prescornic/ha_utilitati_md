@@ -14,6 +14,7 @@ from ..exceptions import UtilitatiMDApiError, UtilitatiMDAuthError, UtilitatiMDC
 _LOGGER = logging.getLogger(__name__)
 
 OPLATA_MD_INVOICE_URL = "https://oplata.md/payment/invoice"
+OPLATA_MD_CHECK_URL = "https://oplata.md/payment/check"
 
 DEFAULT_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
@@ -57,17 +58,37 @@ class OplataMDClient:
         key: str,
         sub_srv: int = 0,
     ) -> OplataMDInvoiceResult:
-        """Fetch and parse invoice data from oplata.md.
-
-        Raises UtilitatiMDConnectionError or UtilitatiMDApiError on failure.
-        """
+        """Fetch and parse invoice data from oplata.md /payment/invoice endpoint."""
         payload = {
             "bill": contract_number,
             "key": key,
             "id": str(service_id),
             "SubSrv": str(sub_srv),
         }
+        return await self._post_and_parse(OPLATA_MD_INVOICE_URL, payload, contract_number)
 
+    async def async_fetch_check(
+        self,
+        contract_number: str,
+        service_id: int,
+        account_key: str = "account",
+        account_name: str = "Cont personal ",
+        sub_srv: int = 0,
+    ) -> OplataMDInvoiceResult:
+        """Fetch and parse invoice data from oplata.md /payment/check endpoint."""
+        payload = {
+            "Id": str(service_id),
+            "SubSrv": str(sub_srv),
+            "Items[0].Key": account_key,
+            "Items[0].Name": account_name,
+            "Items[0].Value": contract_number,
+        }
+        return await self._post_and_parse(OPLATA_MD_CHECK_URL, payload, contract_number)
+
+    async def _post_and_parse(
+        self, url: str, payload: dict[str, str], contract_number: str
+    ) -> OplataMDInvoiceResult:
+        """Send HTTP POST payload to oplata.md and parse output."""
         close_session = False
         session = self._session
         if session is None or session.closed:
@@ -76,7 +97,7 @@ class OplataMDClient:
 
         try:
             async with session.post(
-                OPLATA_MD_INVOICE_URL,
+                url,
                 data=payload,
                 headers=DEFAULT_HEADERS,
                 timeout=aiohttp.ClientTimeout(total=15),

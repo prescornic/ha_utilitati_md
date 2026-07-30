@@ -9,13 +9,15 @@ from aiohttp import ClientSession
 from .auto_salubritate import AutoSalubritateProvider
 from .base import BaseUtilityProvider
 from .chisinau_gaz import ChisinauGazProvider
-from .info_sarp import InfoSarpProvider
+from .energocom import EnergocomProvider
+from .infosarp import InfoSarpProvider
 from .premier_energy import PremierEnergyProvider
 
 PROVIDER_CLASSES: dict[str, type[BaseUtilityProvider]] = {
     "premier_energy": PremierEnergyProvider,
     "chisinau_gaz": ChisinauGazProvider,
-    "info_sarp": InfoSarpProvider,
+    "infosarp": InfoSarpProvider,
+    "energocom": EnergocomProvider,
     "auto_salubritate": AutoSalubritateProvider,
 }
 

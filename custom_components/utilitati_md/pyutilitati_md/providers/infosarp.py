@@ -1,4 +1,4 @@
-"""InfoSarp provider implementation engine via oplata.md."""
+"""INFOSARP provider implementation engine via oplata.md."""
 
 from __future__ import annotations
 
@@ -16,25 +16,25 @@ INFOSARP_SERVICE_KEY = "B0EE6F77-B44C-4422-B256-7459128BF837"
 
 
 class InfoSarpProvider(BaseUtilityProvider):
-    """InfoSarp (Water & Communal Services) provider connector via oplata.md."""
+    """INFOSARP (Water & Communal Services) provider connector via oplata.md."""
 
     def __init__(self, *args, **kwargs) -> None:
-        """Initialize InfoSarp provider."""
+        """Initialize INFOSARP provider."""
         super().__init__(*args, **kwargs)
         self.client = OplataMDClient(session=self.session)
 
     @property
     def provider_id(self) -> str:
         """Return provider identifier."""
-        return "info_sarp"
+        return "infosarp"
 
     @property
     def provider_name(self) -> str:
         """Return human-readable provider name."""
-        return "InfoSarp"
+        return "INFOSARP"
 
     async def async_authenticate(self) -> bool:
-        """Validate InfoSarp contract number against oplata.md backend."""
+        """Validate INFOSARP contract number against oplata.md backend."""
         try:
             res = await self.client.async_fetch_invoice(
                 contract_number=self.contract_number,
@@ -44,16 +44,16 @@ class InfoSarpProvider(BaseUtilityProvider):
             return res.total_amount_mdl is not None
         except Exception as err:
             _LOGGER.warning(
-                "InfoSarp authentication failed for contract %s: %s",
+                "INFOSARP authentication failed for contract %s: %s",
                 self.contract_number,
                 err,
             )
             return False
 
     async def async_fetch_data(self) -> AccountData:
-        """Fetch current invoice balance and sub-services breakdown from InfoSarp."""
+        """Fetch current invoice balance and sub-services breakdown from INFOSARP."""
         _LOGGER.debug(
-            "Fetching InfoSarp data for contract %s", self.contract_number
+            "Fetching INFOSARP data for contract %s", self.contract_number
         )
 
         res = await self.client.async_fetch_invoice(
@@ -85,9 +85,9 @@ class InfoSarpProvider(BaseUtilityProvider):
         )
 
     async def async_submit_meter_reading(self, reading_value: float) -> bool:
-        """Submit meter reading to InfoSarp."""
+        """Submit meter reading to INFOSARP."""
         _LOGGER.info(
-            "Submitting InfoSarp reading %.2f for contract %s",
+            "Submitting INFOSARP reading %.2f for contract %s",
             reading_value,
             self.contract_number,
         )
