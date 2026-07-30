@@ -33,6 +33,7 @@ PROVIDER_PREMIER_ENERGY: Final = "premier_energy"
 PROVIDER_CHISINAU_GAZ: Final = "chisinau_gaz"
 PROVIDER_INFOSARP: Final = "infosarp"
 PROVIDER_ENERGOCOM: Final = "energocom"
+PROVIDER_STARNET: Final = "starnet"
 PROVIDER_AUTO_SALUBRITATE: Final = "auto_salubritate"
 
 PROVIDERS: Final = {
@@ -46,6 +47,12 @@ PROVIDERS: Final = {
         "name": "Energocom (Gaz)",
         "unit_of_measurement": "m³",
         "icon": "mdi:fire",
+        "supports_meter_submission": False,
+    },
+    PROVIDER_STARNET: {
+        "name": "StarNet (Internet / TV)",
+        "unit_of_measurement": "MDL",
+        "icon": "mdi:router-wireless",
         "supports_meter_submission": False,
     },
     PROVIDER_PREMIER_ENERGY: {

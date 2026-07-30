@@ -12,12 +12,14 @@ from .chisinau_gaz import ChisinauGazProvider
 from .energocom import EnergocomProvider
 from .infosarp import InfoSarpProvider
 from .premier_energy import PremierEnergyProvider
+from .starnet import StarnetProvider
 
 PROVIDER_CLASSES: dict[str, type[BaseUtilityProvider]] = {
     "premier_energy": PremierEnergyProvider,
     "chisinau_gaz": ChisinauGazProvider,
     "infosarp": InfoSarpProvider,
     "energocom": EnergocomProvider,
+    "starnet": StarnetProvider,
     "auto_salubritate": AutoSalubritateProvider,
 }
 
