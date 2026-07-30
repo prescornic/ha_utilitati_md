@@ -6,10 +6,8 @@
         "description": "Selectați furnizorul de utilități și introduceți detaliile contractului.",
         "data": {
           "provider": "Furnizor de servicii",
-          "contract_number": "Număr contract / Cont personal",
-          "place_of_consumption": "Loc de consum (NCL)",
-          "username": "Nume utilizator / Email (Opțional)",
-          "password": "Parolă (Opțional)"
+          "alias": "Alias / Nume cont (Opțional, ex. Apartament, Casă)",
+          "contract_number": "Număr contract / Cont personal (ex. 12/123456/7)"
         }
       }
     },
@@ -28,7 +26,7 @@
         "title": "Opțiuni Utilități Moldova",
         "description": "Configurați frecvența de actualizare a datelor.",
         "data": {
-          "scan_interval": "Interval actualizare date (Ore)"
+          "scan_interval": "Interval actualizare date (Ore, implicit 24h)"
         }
       }
     }

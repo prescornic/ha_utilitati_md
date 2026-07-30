@@ -17,10 +17,10 @@ A unified Home Assistant integration for managing Moldova utility services. Cent
 
 | Provider | Utility Type | Status | Supported Features |
 |---|---|---|---|
-| 🗑️ **Regia AutoSalubritate** | Waste Management / Salubrizare | 🟡 **In Progress** | Invoice tracking, Due dates, Balance |
+| 🚰 **InfoSarp** | Water & Communal / Servicii Comunale | 🟡 **In Progress** | Invoice tracking, Consumption stats |
 | 💡 **Premier Energy** | Electricity / Energie Electrică | ⚪ **Planned** | Invoice tracking, Balance, Index submission |
+| 🗑️ **Regia AutoSalubritate** | Waste Management / Salubrizare | ⚪ **Planned** | Invoice tracking, Due dates, Balance |
 | 🔥 **Chișinău-Gaz** | Natural Gas / Gaze Naturale | ⚪ **Planned** | Invoice tracking, Balance, Index submission |
-| 🚰 **InfoSarp** | Water & Communal / Servicii Comunale | ⚪ **Planned** | Invoice tracking, Consumption stats |
 
 ---
 

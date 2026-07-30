@@ -24,13 +24,19 @@ class UtilitatiMDEntity(CoordinatorEntity[UtilitatiMDDataUpdateCoordinator]):
         provider_info = PROVIDERS.get(coordinator.provider_id, {})
         provider_name = provider_info.get("name", coordinator.provider_id)
 
+        device_name = (
+            coordinator.config_entry.title
+            if coordinator.config_entry
+            else f"{provider_name} ({coordinator.contract_number})"
+        )
+
         self._attr_unique_id = (
             f"{coordinator.provider_id}_{coordinator.contract_number}_{entity_type}"
         )
 
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, f"{coordinator.provider_id}_{coordinator.contract_number}")},
-            name=f"{provider_name} ({coordinator.contract_number})",
+            name=device_name,
             manufacturer=MANUFACTURER,
             model=provider_name,
             sw_version="0.1.0",

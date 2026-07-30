@@ -6,10 +6,8 @@
         "description": "Select your Moldova utility provider and enter your contract details.",
         "data": {
           "provider": "Utility Provider",
-          "contract_number": "Contract Number / Account ID",
-          "place_of_consumption": "Place of Consumption (NCL / NLC)",
-          "username": "Username / Email (Optional)",
-          "password": "Password (Optional)"
+          "alias": "Account Alias / Name (Optional, e.g. Apartment, House)",
+          "contract_number": "Contract Number / Account ID (e.g. 12/123456/7)"
         }
       }
     },
@@ -28,7 +26,7 @@
         "title": "Moldova Utilities Options",
         "description": "Configure update frequency and options.",
         "data": {
-          "scan_interval": "Data Refresh Interval (Hours)"
+          "scan_interval": "Data Refresh Interval (Hours, default 24h)"
         }
       }
     }

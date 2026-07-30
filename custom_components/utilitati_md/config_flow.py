@@ -18,6 +18,7 @@ from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
 from .const import (
+    CONF_ALIAS,
     CONF_CONTRACT_NUMBER,
     CONF_PASSWORD,
     CONF_PLACE_OF_CONSUMPTION,
@@ -40,12 +41,13 @@ class UtilitatiMDConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
-        """Handle the initial step where user configures provider credentials."""
+        """Handle the initial step where user configures provider details."""
         errors: dict[str, str] = {}
 
         if user_input is not None:
             provider_id = user_input[CONF_PROVIDER]
-            contract_number = user_input[CONF_CONTRACT_NUMBER]
+            contract_number = user_input[CONF_CONTRACT_NUMBER].strip()
+            alias = user_input.get(CONF_ALIAS, "").strip()
             username = user_input.get(CONF_USERNAME)
             password = user_input.get(CONF_PASSWORD)
             place_of_consumption = user_input.get(CONF_PLACE_OF_CONSUMPTION)
@@ -78,7 +80,10 @@ class UtilitatiMDConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
             if not errors:
                 provider_name = PROVIDERS.get(provider_id, {}).get("name", provider_id)
-                title = f"{provider_name} ({contract_number})"
+                if alias:
+                    title = f"{provider_name} - {alias}"
+                else:
+                    title = f"{provider_name} ({contract_number})"
 
                 return self.async_create_entry(
                     title=title,
@@ -90,10 +95,8 @@ class UtilitatiMDConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         schema = vol.Schema(
             {
                 vol.Required(CONF_PROVIDER): vol.In(provider_options),
+                vol.Optional(CONF_ALIAS): str,
                 vol.Required(CONF_CONTRACT_NUMBER): str,
-                vol.Optional(CONF_PLACE_OF_CONSUMPTION): str,
-                vol.Optional(CONF_USERNAME): str,
-                vol.Optional(CONF_PASSWORD): str,
             }
         )
 
@@ -135,7 +138,7 @@ class UtilitatiMDOptionsFlowHandler(config_entries.OptionsFlow):
                 vol.Optional(
                     CONF_SCAN_INTERVAL,
                     default=current_interval,
-                ): vol.All(vol.Coerce(int), vol.Range(min=1, max=24)),
+                ): vol.All(vol.Coerce(int), vol.Range(min=1, max=168)),
             }
         )
 

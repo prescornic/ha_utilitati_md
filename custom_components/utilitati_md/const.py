@@ -19,13 +19,14 @@ ATTRIBUTION: Final = "Data provided by Moldova Utility Providers"
 
 # Configuration options
 CONF_PROVIDER: Final = "provider"
+CONF_ALIAS: Final = "alias"
 CONF_CONTRACT_NUMBER: Final = "contract_number"
 CONF_PLACE_OF_CONSUMPTION: Final = "place_of_consumption"
 CONF_USERNAME: Final = "username"
 CONF_PASSWORD: Final = "password"
 CONF_SCAN_INTERVAL: Final = "scan_interval"
 
-DEFAULT_SCAN_INTERVAL_HOURS: Final = 4
+DEFAULT_SCAN_INTERVAL_HOURS: Final = 24
 
 # Provider identifiers
 PROVIDER_PREMIER_ENERGY: Final = "premier_energy"
