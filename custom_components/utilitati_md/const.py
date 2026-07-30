@@ -33,6 +33,7 @@ PROVIDER_PREMIER_ENERGY: Final = "premier_energy"
 PROVIDER_INFOSARP: Final = "infosarp"
 PROVIDER_ENERGOCOM: Final = "energocom"
 PROVIDER_STARNET: Final = "starnet"
+PROVIDER_FEE_NORD: Final = "fee_nord"
 PROVIDER_APA_CANAL_CHISINAU: Final = "apa_canal_chisinau"
 PROVIDER_AUTO_SALUBRITATE: Final = "auto_salubritate"
 
@@ -59,6 +60,12 @@ PROVIDERS: Final = {
         "name": "Premier Energy (Energie Electrică)",
         "unit_of_measurement": "kWh",
         "icon": "mdi:lightning-bolt-outline",
+        "supports_meter_submission": True,
+    },
+    PROVIDER_FEE_NORD: {
+        "name": "FEE Nord (Energie Electrică Nord)",
+        "unit_of_measurement": "kWh",
+        "icon": "mdi:lightning-bolt",
         "supports_meter_submission": True,
     },
     PROVIDER_APA_CANAL_CHISINAU: {

@@ -10,6 +10,7 @@ from .apa_canal_chisinau import ApaCanalChisinauProvider
 from .auto_salubritate import AutoSalubritateProvider
 from .base import BaseUtilityProvider
 from .energocom import EnergocomProvider
+from .fee_nord import FeeNordProvider
 from .infosarp import InfoSarpProvider
 from .premier_energy import PremierEnergyProvider
 from .starnet import StarnetProvider
@@ -19,6 +20,7 @@ PROVIDER_CLASSES: dict[str, type[BaseUtilityProvider]] = {
     "infosarp": InfoSarpProvider,
     "energocom": EnergocomProvider,
     "starnet": StarnetProvider,
+    "fee_nord": FeeNordProvider,
     "apa_canal_chisinau": ApaCanalChisinauProvider,
     "auto_salubritate": AutoSalubritateProvider,
 }
