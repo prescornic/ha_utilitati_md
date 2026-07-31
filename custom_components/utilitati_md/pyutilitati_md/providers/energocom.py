@@ -1,4 +1,4 @@
-"""Energocom provider implementation engine via oplata.md."""
+"""Energocom provider implementation engine via bpay.md."""
 
 from __future__ import annotations
 
@@ -7,20 +7,20 @@ import logging
 
 from ..models import AccountData, Invoice
 from .base import BaseUtilityProvider
-from .oplata_md import OplataMDClient
+from .bpay_md import BPayClient
 
 _LOGGER = logging.getLogger(__name__)
 
-ENERGOCOM_SERVICE_ID = 1333
+ENERGOCOM_BPAY_SERVICE = "energocom"
 
 
 class EnergocomProvider(BaseUtilityProvider):
-    """Energocom provider connector via oplata.md."""
+    """Energocom provider connector via bpay.md API."""
 
     def __init__(self, *args, **kwargs) -> None:
         """Initialize Energocom provider."""
         super().__init__(*args, **kwargs)
-        self.client = OplataMDClient(session=self.session)
+        self.client = BPayClient(session=self.session)
 
     @property
     def provider_id(self) -> str:
@@ -33,11 +33,11 @@ class EnergocomProvider(BaseUtilityProvider):
         return "Energocom"
 
     async def async_authenticate(self) -> bool:
-        """Validate Energocom contract number against oplata.md backend."""
+        """Validate Energocom contract number against bpay.md backend."""
         try:
             res = await self.client.async_fetch_check(
                 contract_number=self.contract_number,
-                service_id=ENERGOCOM_SERVICE_ID,
+                service_name=ENERGOCOM_BPAY_SERVICE,
             )
             return res.total_amount_mdl is not None
         except Exception as err:
@@ -49,24 +49,26 @@ class EnergocomProvider(BaseUtilityProvider):
             return False
 
     async def async_fetch_data(self) -> AccountData:
-        """Fetch current invoice balance from Energocom."""
+        """Fetch current invoice balance from Energocom via bpay.md."""
         _LOGGER.debug(
             "Fetching Energocom data for contract %s", self.contract_number
         )
 
         res = await self.client.async_fetch_check(
             contract_number=self.contract_number,
-            service_id=ENERGOCOM_SERVICE_ID,
+            service_name=ENERGOCOM_BPAY_SERVICE,
         )
 
-        breakdown = {item.name: item.amount_mdl for item in res.items}
+        details: dict[str, str | float] = {}
+        if res.customer_name:
+            details["customer_name"] = res.customer_name
 
         last_invoice = Invoice(
             invoice_number=f"EC-{self.contract_number}",
             amount_mdl=res.total_amount_mdl,
             issue_date=date.today(),
             is_paid=(res.total_amount_mdl <= 0),
-            extra_details=breakdown,
+            extra_details=details,
         )
 
         return AccountData(

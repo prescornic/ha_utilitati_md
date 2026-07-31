@@ -27,7 +27,7 @@ Currently, this integration utilizes **[oplata.md](https://oplata.md)** as the p
 | 🔥 **Energocom** | Natural Gas / Gaz | 🟢 **Supported** | Invoice tracking, Balance |
 | 🌐 **StarNet** | Internet & TV / Internet | 🟢 **Supported** | Invoice tracking, Balance |
 | 💡 **Premier Energy** | Electricity / Energie Electrică | 🟢 **Supported** | Invoice tracking, Balance |
-| ⚡ **FEE Nord** | Electricity / Energie Electrică | 🟡 **In Progress** | Invoice tracking, Balance (Pending live invoice) |
+| ⚡ **FEE Nord** | Electricity / Energie Electrică | 🟢 **Supported** | Invoice tracking, Balance |
 | 🚰 **Apă-Canal Chișinău** | Water & Sewage / Apă | 🟡 **In Progress** | Invoice tracking, Balance (Pending live invoice) |
 | 🗑️ **Regia AutoSalubritate** | Waste Management / Salubrizare | 🟡 **In Progress** | Invoice tracking, Balance (Pending live invoice) |
 
