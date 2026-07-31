@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import date
 import logging
 
 from homeassistant.components.binary_sensor import (
@@ -34,7 +35,7 @@ async def async_setup_entry(
 
 
 class UtilitatiMDOverdueAlertBinarySensor(UtilitatiMDEntity, BinarySensorEntity):
-    """Binary sensor signaling whether there is an unpaid overdue invoice."""
+    """Binary sensor signaling whether there is an overdue invoice past its due date."""
 
     _attr_name = "Overdue Invoice Alert"
     _attr_device_class = BinarySensorDeviceClass.PROBLEM
@@ -46,12 +47,15 @@ class UtilitatiMDOverdueAlertBinarySensor(UtilitatiMDEntity, BinarySensorEntity)
 
     @property
     def is_on(self) -> bool | None:
-        """Return True if balance is positive and invoice is unpaid."""
+        """Return True if an invoice is unpaid and its due date has passed."""
         if self.coordinator.data:
             balance = self.coordinator.data.unpaid_balance_mdl
             last_inv = self.coordinator.data.last_invoice
-            if balance > 0 and (last_inv is None or not last_inv.is_paid):
-                return True
+            if balance > 0:
+                if last_inv and last_inv.due_date:
+                    return date.today() > last_inv.due_date
+                # An unpaid current invoice without an expired due date is not overdue
+                return False
             return False
         return None
 

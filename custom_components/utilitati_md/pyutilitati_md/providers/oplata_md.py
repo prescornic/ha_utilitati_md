@@ -13,7 +13,6 @@ from ..exceptions import UtilitatiMDApiError, UtilitatiMDAuthError, UtilitatiMDC
 
 _LOGGER = logging.getLogger(__name__)
 
-OPLATA_MD_INVOICE_URL = "https://oplata.md/payment/invoice"
 OPLATA_MD_CHECK_URL = "https://oplata.md/payment/check"
 
 DEFAULT_HEADERS = {
@@ -50,22 +49,6 @@ class OplataMDClient:
     def __init__(self, session: aiohttp.ClientSession | None = None) -> None:
         """Initialize oplata.md client."""
         self._session = session
-
-    async def async_fetch_invoice(
-        self,
-        contract_number: str,
-        service_id: int,
-        key: str,
-        sub_srv: int = 0,
-    ) -> OplataMDInvoiceResult:
-        """Fetch and parse invoice data from oplata.md /payment/invoice endpoint."""
-        payload = {
-            "bill": contract_number,
-            "key": key,
-            "id": str(service_id),
-            "SubSrv": str(sub_srv),
-        }
-        return await self._post_and_parse(OPLATA_MD_INVOICE_URL, payload, contract_number)
 
     async def async_fetch_check(
         self,

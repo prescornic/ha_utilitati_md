@@ -23,7 +23,7 @@ Currently, this integration utilizes **[oplata.md](https://oplata.md)** as the p
 
 | Provider | Utility Type | Status | Supported Features |
 |---|---|---|---|
-| 🚰 **InfoSarp** | Water & Communal / Servicii Comunale | 🟢 **Supported** | Invoice tracking, Balance, Line-item breakdown |
+| 🚰 **InfoSapr** | Water & Communal / Servicii Comunale | 🟢 **Supported** | Invoice tracking, Balance, Line-item breakdown |
 | 🔥 **Energocom** | Natural Gas / Gaz | 🟢 **Supported** | Invoice tracking, Balance |
 | 🌐 **StarNet** | Internet & TV / Internet | 🟢 **Supported** | Invoice tracking, Balance |
 | 💡 **Premier Energy** | Electricity / Energie Electrică | 🟢 **Supported** | Invoice tracking, Balance |
@@ -77,7 +77,7 @@ Here is an example of the entities created by **Utilități Moldova** inside Hom
 
 1. Go to **Settings** -> **Devices & Services** -> **Add Integration**.
 2. Search for **Utilități Moldova**.
-3. Select your Utility Provider (e.g., **InfoSarp**, **Energocom**, **StarNet**, **Premier Energy**, **FEE Nord**, **Apă-Canal Chișinău**).
+3. Select your Utility Provider (e.g., **InfoSapr**, **Energocom**, **StarNet**, **Premier Energy**, **FEE Nord**, **Apă-Canal Chișinău**).
 4. Enter Account Alias (optional) and Contract Number / Personal Code (e.g., `123456`).
 5. Click **Submit**.
 

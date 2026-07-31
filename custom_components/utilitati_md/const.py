@@ -30,7 +30,7 @@ DEFAULT_SCAN_INTERVAL_HOURS: Final = 24
 
 # Provider identifiers
 PROVIDER_PREMIER_ENERGY: Final = "premier_energy"
-PROVIDER_INFOSARP: Final = "infosarp"
+PROVIDER_INFOSAPR: Final = "infosapr"
 PROVIDER_ENERGOCOM: Final = "energocom"
 PROVIDER_STARNET: Final = "starnet"
 PROVIDER_FEE_NORD: Final = "fee_nord"
@@ -38,8 +38,8 @@ PROVIDER_APA_CANAL_CHISINAU: Final = "apa_canal_chisinau"
 PROVIDER_AUTO_SALUBRITATE: Final = "auto_salubritate"
 
 PROVIDERS: Final = {
-    PROVIDER_INFOSARP: {
-        "name": "InfoSarp (Servicii Comunale / Apă)",
+    PROVIDER_INFOSAPR: {
+        "name": "InfoSapr (Servicii Comunale / Apă)",
         "unit_of_measurement": "m³",
         "icon": "mdi:water-pump",
         "supports_meter_submission": True,

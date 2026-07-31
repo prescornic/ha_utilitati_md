@@ -11,13 +11,13 @@ from .auto_salubritate import AutoSalubritateProvider
 from .base import BaseUtilityProvider
 from .energocom import EnergocomProvider
 from .fee_nord import FeeNordProvider
-from .infosarp import InfoSarpProvider
+from .infosapr import InfoSaprProvider
 from .premier_energy import PremierEnergyProvider
 from .starnet import StarnetProvider
 
 PROVIDER_CLASSES: dict[str, type[BaseUtilityProvider]] = {
     "premier_energy": PremierEnergyProvider,
-    "infosarp": InfoSarpProvider,
+    "infosapr": InfoSaprProvider,
     "energocom": EnergocomProvider,
     "starnet": StarnetProvider,
     "fee_nord": FeeNordProvider,
