@@ -15,7 +15,7 @@ A unified Home Assistant integration for managing Moldova utility services. Cent
 
 ## ℹ️ Data Source & Backend Architecture
 
-Currently, this integration utilizes **[oplata.md](https://oplata.md)** as the primary backend data source to retrieve balance amounts, unpaid invoices, and sub-service payment breakdowns across Moldova utility providers without requiring complex login credentials.
+Currently, this integration utilizes **[oplata.md](https://oplata.md)** and **[bpay.md](https://bpay.md)** as backend data sources to retrieve balance amounts, unpaid invoices, sub-service payment breakdowns, and meter readings across Moldova utility providers without requiring complex login credentials.
 
 ---
 
@@ -28,7 +28,7 @@ Currently, this integration utilizes **[oplata.md](https://oplata.md)** as the p
 | 🌐 **StarNet** | Internet & TV / Internet | 🟢 **Supported** | Invoice tracking, Balance |
 | 💡 **Premier Energy** | Electricity / Energie Electrică | 🟢 **Supported** | Invoice tracking, Balance |
 | ⚡ **FEE Nord** | Electricity / Energie Electrică | 🟢 **Supported** | Invoice tracking, Balance |
-| 🚰 **Apă-Canal Chișinău** | Water & Sewage / Apă | 🟡 **In Progress** | Invoice tracking, Balance (Pending live invoice) |
+| 🚰 **Apă-Canal Chișinău** | Water & Sewage / Apă | 🟢 **Supported** | Invoice tracking, Balance, Line-item breakdown, Meter Index |
 | 🗑️ **Regia AutoSalubritate** | Waste Management / Salubrizare | 🟡 **In Progress** | Invoice tracking, Balance (Pending live invoice) |
 
 ---
@@ -77,8 +77,8 @@ Here is an example of the entities created by **Utilități Moldova** inside Hom
 
 1. Go to **Settings** -> **Devices & Services** -> **Add Integration**.
 2. Search for **Utilități Moldova**.
-3. Select your Utility Provider (e.g., **InfoSapr**, **Energocom**, **StarNet**, **Premier Energy**, **FEE Nord**, **Apă-Canal Chișinău**).
-4. Enter Account Alias (optional) and Contract Number / Personal Code (e.g., `123456`).
+3. Select your Utility Provider (e.g., **InfoSapr**, **Energocom**, **StarNet**, **Premier Energy**, **Apă-Canal Chișinău**).
+4. Enter Account Alias (optional) and Contract Number / Invoice Code (e.g., `SP406643`).
 5. Click **Submit**.
 
 ---

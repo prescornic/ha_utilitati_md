@@ -26,12 +26,23 @@ BPAY_DEFAULT_PROJECT = "wwwbpaymd"
 
 
 @dataclass
+class BPayServiceItem:
+    """Sub-service line item breakdown from bpay.md."""
+
+    name: str
+    amount_mdl: float
+
+
+@dataclass
 class BPayInvoiceResult:
     """Parsed result from bpay.md payment invoice request."""
 
     contract_number: str
     total_amount_mdl: float
     customer_name: str | None = None
+    address: str | None = None
+    items: list[BPayServiceItem] = field(default_factory=list)
+    meter_index: float | None = None
     raw_json: dict[str, Any] = field(default_factory=dict)
 
 
@@ -46,12 +57,13 @@ class BPayClient:
         self,
         contract_number: str,
         service_name: str,
+        token: str = BPAY_DEFAULT_TOKEN,
         lang: str = "ro",
     ) -> BPayInvoiceResult:
         """Fetch and parse invoice data from bpay.md CheckAccount endpoint."""
         req_uuid = uuid.uuid4().hex
         payload = {
-            "token": BPAY_DEFAULT_TOKEN,
+            "token": token,
             "project": BPAY_DEFAULT_PROJECT,
             "lang": lang,
             "service": service_name,
@@ -92,19 +104,45 @@ class BPayClient:
             raise UtilitatiMDApiError(f"bpay.md API error for contract '{contract_number}': {msg}")
 
         params = data.get("params", {})
-        opamount = params.get("opamount", 0.0)
-        try:
-            raw_val = float(opamount)
-            # Negative opamount in bpay.md API represents unpaid balance amount
-            total_amount = abs(raw_val)
-        except (ValueError, TypeError):
-            total_amount = 0.0
+        items: list[BPayServiceItem] = []
 
-        customer_name = params.get("FIO") or params.get("npp")
+        # 1. Parse line items or opamount
+        invoices_list = params.get("invoices")
+        if isinstance(invoices_list, list) and len(invoices_list) > 0:
+            for inv in invoices_list:
+                s_name = inv.get("service_name") or "Service"
+                s_amt = float(inv.get("amount", 0.0))
+                items.append(BPayServiceItem(name=s_name, amount_mdl=s_amt))
+            total_amount = sum(item.amount_mdl for item in items)
+        else:
+            opamount = params.get("opamount", 0.0)
+            try:
+                raw_val = float(opamount)
+                total_amount = abs(raw_val)
+            except (ValueError, TypeError):
+                total_amount = 0.0
+
+        # 2. Parse meter index if present
+        meter_index: float | None = None
+        contor_list = params.get("contor")
+        if isinstance(contor_list, list) and len(contor_list) > 0:
+            try:
+                c_val = contor_list[0].get("cont_val") or contor_list[0].get("indic_prec")
+                if c_val is not None:
+                    meter_index = float(c_val)
+            except (ValueError, TypeError):
+                pass
+
+        # 3. Parse customer info
+        customer_name = params.get("name") or params.get("FIO") or params.get("npp")
+        address = params.get("address")
 
         return BPayInvoiceResult(
             contract_number=contract_number,
             total_amount_mdl=total_amount,
             customer_name=customer_name,
+            address=address,
+            items=items,
+            meter_index=meter_index,
             raw_json=data,
         )
