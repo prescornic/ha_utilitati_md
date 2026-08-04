@@ -39,43 +39,43 @@ PROVIDER_AUTO_SALUBRITATE: Final = "auto_salubritate"
 
 PROVIDERS: Final = {
     PROVIDER_INFOSAPR: {
-        "name": "InfoSapr (Servicii Comunale / Apă)",
+        "name": "InfoSapr",
         "unit_of_measurement": "m³",
         "icon": "mdi:water-pump",
         "supports_meter_submission": True,
     },
     PROVIDER_ENERGOCOM: {
-        "name": "Energocom (Gaz)",
+        "name": "Energocom",
         "unit_of_measurement": "m³",
         "icon": "mdi:fire",
         "supports_meter_submission": False,
     },
     PROVIDER_STARNET: {
-        "name": "StarNet (Internet / TV)",
+        "name": "StarNet",
         "unit_of_measurement": "MDL",
         "icon": "mdi:router-wireless",
         "supports_meter_submission": False,
     },
     PROVIDER_PREMIER_ENERGY: {
-        "name": "Premier Energy (Energie Electrică)",
+        "name": "Premier Energy",
         "unit_of_measurement": "kWh",
         "icon": "mdi:lightning-bolt-outline",
         "supports_meter_submission": True,
     },
     PROVIDER_FEE_NORD: {
-        "name": "FEE Nord (Energie Electrică Nord)",
+        "name": "FEE Nord",
         "unit_of_measurement": "kWh",
         "icon": "mdi:lightning-bolt",
         "supports_meter_submission": True,
     },
     PROVIDER_APA_CANAL_CHISINAU: {
-        "name": "Apă-Canal Chișinău (Apă / Canalizare)",
+        "name": "Apă-Canal Chișinău",
         "unit_of_measurement": "m³",
         "icon": "mdi:water",
         "supports_meter_submission": True,
     },
     PROVIDER_AUTO_SALUBRITATE: {
-        "name": "Regia Autosalubritate (Salubrizare)",
+        "name": "Regia Autosalubritate",
         "unit_of_measurement": "MDL",
         "icon": "mdi:delete-outline",
         "supports_meter_submission": False,
