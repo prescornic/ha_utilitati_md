@@ -6,48 +6,69 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/default)
 
-A unified Home Assistant integration for managing Moldova utility services. Centralizes invoices, payment due dates, overdue notifications, and meter index submissions in one clean interface, regardless of utility provider.
+A unified Home Assistant integration for managing Moldova utility services. Centralizes invoices, payment due dates, overdue notifications, consumption, and meter readings in one clean interface, regardless of utility provider.
 
 > [!WARNING]
 > 🛠️ **Active Development Warning**: This project is under **active development** and may undergo frequent changes or be unstable. Use with caution.
 
 ---
 
-## ℹ️ Data Source & Backend Architecture
+## ℹ️ Data Sources & Backend Architecture
 
-Currently, this integration utilizes **[oplata.md](https://oplata.md)** and **[bpay.md](https://bpay.md)** as backend data sources to retrieve balance amounts, unpaid invoices, sub-service payment breakdowns, and meter readings across Moldova utility providers without requiring complex login credentials.
+This integration leverages three primary backend methods to fetch utility details:
+1. 🔑 **Direct Personal Cabinet API / Scraper**: Authenticates directly with official provider portals (e.g., **Premier Energy** `oficiulonline.premierenergy.md`) to extract full invoice details, meter readings, and consumption metrics.
+2. 💳 **bpay.md API**: Queries the `bpay.md` check endpoint (`bscm-xapi.bpay.md`) for structured JSON invoices, line-item breakdowns, subscriber names, and meter indices without requiring portal login credentials.
+3. 🌐 **oplata.md Portal**: Queries `oplata.md/payment/check` as a lightweight backend connector for balance totals and sub-service breakdowns.
 
 ---
 
-## 🏢 Supported Providers & Development Status
+## 🏢 Supported Providers & Data Methods
 
-| Provider | Utility Type | Status | Supported Features |
-|---|---|---|---|
-| 🚰 **InfoSapr** | Water & Communal / Servicii Comunale | 🟢 **Supported** | Invoice tracking, Balance, Line-item breakdown |
-| 🔥 **Energocom** | Natural Gas / Gaz | 🟢 **Supported** | Invoice tracking, Balance |
-| 🌐 **StarNet** | Internet & TV / Internet | 🟢 **Supported** | Invoice tracking, Balance |
-| 💡 **Premier Energy** | Electricity / Energie Electrică | 🟢 **Supported** | Invoice tracking, Balance |
-| ⚡ **FEE Nord** | Electricity / Energie Electrică | 🟢 **Supported** | Invoice tracking, Balance |
-| 🚰 **Apă-Canal Chișinău** | Water & Sewage / Apă | 🟢 **Supported** | Invoice tracking, Balance, Line-item breakdown, Meter Index |
-| 🗑️ **Regia AutoSalubritate** | Waste Management / Salubrizare | 🟡 **In Progress** | Invoice tracking, Balance (Pending live invoice) |
+| Provider | Utility Type | Status | Backend Method | Extracted Details & Features |
+|---|---|---|---|---|
+| 💡 **Premier Energy** | Electricity / Energie Electrică | 🟢 **Supported** | 🔑 **Personal Cabinet** (`oficiulonline.premierenergy.md`) | Debt (`Datoria NLC`), Advance (`Avans`), Invoice #, Issue & Due Dates, Current & Previous Meter Readings (`kWh`), Monthly Consumption (`kWh`), Bill Amount (`MDL`), Billing Period, Payment Status |
+| 🚰 **Apă-Canal Chișinău** | Water & Sewage / Apă | 🟢 **Supported** | 💳 **bpay.md API** | Unpaid Balance (`MDL`), Line-item breakdown (`Apă potabilă`, `Canalizare`), Current Meter Index (`m³`), Customer Name & Address |
+| 🚰 **InfoSapr** | Water & Communal / Servicii Comunale | 🟢 **Supported** | 🌐 **oplata.md Portal** | Unpaid Balance (`MDL`), Sub-service breakdown (`Deservirea bloc`, `Transport gunoi`, `Lift`, `Fond rezerva`) |
+| 🔥 **Energocom** | Natural Gas / Gaz | 🟢 **Supported** | 💳 **bpay.md API** | Unpaid Balance (`MDL`), Subscriber Name (`customer_name`) |
+| 🌐 **StarNet** | Internet & TV / Internet | 🟢 **Supported** | 🌐 **oplata.md Portal** | Unpaid Balance (`MDL`) |
+| ⚡ **FEE Nord** | Electricity / Energie Electrică | 🟢 **Supported** | 🌐 **oplata.md Portal** | Unpaid Balance (`MDL`) |
+| 🗑️ **Regia AutoSalubritate** | Waste Management / Salubrizare | 🟡 **In Progress** | 🌐 **oplata.md Portal** | Unpaid Balance (`MDL`) *(Pending live invoice test)* |
+
+---
+
+## 💡 Premier Energy Personal Cabinet Data Details
+
+When connected using your **Premier Energy Personal Cabinet** credentials (`Username`, `Password`, `NLC`), the integration automatically extracts the following entities and attributes:
+
+- 📊 **Balance & Account Entities**:
+  - **Unpaid Balance (`MDL`)**: Real-time NLC total debt (`Datoria totală pe NLC`).
+  - **Advance Credit (`Avans`)**: Stored in `extra_details` dictionary.
+- 🧾 **Invoice Metadata**:
+  - **Invoice Number**: e.g., `7199134127`.
+  - **Bill Amount**: Total bill amount in `MDL`.
+  - **Issue Date**: Date invoice was generated (e.g., `21.07.2026`).
+  - **Due Date**: Payment deadline date (e.g., `04.08.2026`).
+  - **Billing Period**: Full period range (e.g., `23.06.2026 - 21.07.2026`).
+  - **Payment Status**: `Achitata` (Paid) / `Neachitata` (Unpaid).
+- ⚡ **Consumption & Meter Readings**:
+  - **Current Meter Index**: Current meter index in `kWh` (`Indicații actuale`).
+  - **Previous Meter Index**: Previous meter index in `kWh` (`Indicații precedente`).
+  - **Monthly Consumption**: Net electricity consumption for the period in `kWh` (`Consum (kWh)`).
 
 ---
 
 ## 🚀 Future Roadmap & Planned Features
 
-- 🔑 **Direct Personal Cabinet Integrations**: Future releases will introduce direct authentication with provider customer portals (e.g., **Premier Energy**, **StarNet**) to unlock advanced capabilities:
-  - Direct meter index submissions (*Indicații contor*)
-  - Detailed historical consumption metrics (*Consum kWh / m³*)
-  - Direct PDF invoice downloads & payment history
-- ⚡ **Actions & Services**: Custom Home Assistant services (such as `utilitati_md.submit_meter_reading`) for submitting monthly index readings are planned for a future release once direct provider portal connectors are active.
+- 🔑 **Additional Personal Cabinet Connectors**: Expanding direct personal cabinet integrations to remaining providers (**StarNet**, **Energocom**, **Apă-Canal**) for PDF downloads and consumption history.
+- ⚡ **Actions & Services**: Custom Home Assistant services (such as `utilitati_md.submit_meter_reading`) for submitting monthly index readings are planned for a future release once direct provider portal submission APIs are active.
 - ⚠️ **Service Disruption & Outage Alerts**: Planned integration for contract address outage alerts and scheduled maintenance notifications (*Deconectări de servicii sau avarii pe adresa contractului*).
 
 ---
 
 ## ⚡ Features
 
-- 🏢 **Multi-Provider Support**: Unified experience across utility providers in Moldova.
-- 📊 **Sensors & Binary Sensors**: Balance (MDL), Due Date, Meter Index, Consumption, and Overdue Payment Alerts.
+- 🏢 **Multi-Provider & Multi-NLC Support**: Unified experience across Moldova utility providers with support for multiple contract NLCs per account.
+- 📊 **Sensors & Binary Sensors**: Balance (MDL), Due Date, Meter Index (`kWh`/`m³`), Monthly Consumption, and Overdue Payment Alerts.
 - 🌐 **Multi-Language Support**: English, Romanian (`ro`), and Russian (`ru`).
 
 ---
@@ -77,8 +98,8 @@ Here is an example of the entities created by **Utilități Moldova** inside Hom
 
 1. Go to **Settings** -> **Devices & Services** -> **Add Integration**.
 2. Search for **Utilități Moldova**.
-3. Select your Utility Provider (e.g., **InfoSapr**, **Energocom**, **StarNet**, **Premier Energy**, **Apă-Canal Chișinău**).
-4. Enter Account Alias (optional) and Contract Number / Invoice Code (e.g., `SP406643`).
+3. Select your Utility Provider (e.g., **Premier Energy**, **Apă-Canal Chișinău**, **InfoSapr**, **Energocom**, **StarNet**, **FEE Nord**).
+4. Enter Account Alias (optional), Contract Number / NLC Code (e.g., `7199134`), and credentials (Username & Password for Personal Cabinet providers like Premier Energy).
 5. Click **Submit**.
 
 ---

@@ -50,8 +50,8 @@ class UtilitatiMDConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             provider_id = user_input[CONF_PROVIDER]
             contract_number = user_input[CONF_CONTRACT_NUMBER].strip()
             alias = user_input.get(CONF_ALIAS, "").strip()
-            username = user_input.get(CONF_USERNAME)
-            password = user_input.get(CONF_PASSWORD)
+            username = user_input.get(CONF_USERNAME, "").strip() if user_input.get(CONF_USERNAME) else None
+            password = user_input.get(CONF_PASSWORD, "").strip() if user_input.get(CONF_PASSWORD) else None
             place_of_consumption = user_input.get(CONF_PLACE_OF_CONSUMPTION)
 
             # Prevent duplicate entries for the same provider and contract number
@@ -99,6 +99,8 @@ class UtilitatiMDConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_PROVIDER): vol.In(provider_options),
                 vol.Optional(CONF_ALIAS): str,
                 vol.Required(CONF_CONTRACT_NUMBER): str,
+                vol.Optional(CONF_USERNAME): str,
+                vol.Optional(CONF_PASSWORD): str,
             }
         )
 
